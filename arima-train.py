@@ -25,15 +25,17 @@ def parser(x):
 # plot_acf(series, lags=100)
 # pyplot.show()
 
+# Fix model_fit.save from statsmodel
 def __getnewargs__(self):
 	return ((self.endog),(self.k_lags, self.k_diff, self.k_ma))
-
 ARIMA.__getnewargs__ = __getnewargs__
 
 series = read_csv(file_path, header=0, parse_dates=[0], index_col=0, squeeze=True, date_parser=parser)
 X = series.values
+# Split data for trainin and test 971 is number of data from previous year before 2015
 size = int(971)
 train, test = X[0:size], X[size:len(X)]
+
 history = [x for x in train]
 predictions = list()
 for t in range(len(test)):
